@@ -5,9 +5,10 @@ import { columns } from '../Products/Columns'
 import { ProductDialog } from './ProductDialog/ProductDialog'
 import { useProductStore } from '@/store/ProductStore'
 import { useEffect } from 'react'
+import { UpdateProductDialog } from './ProductDialog/UpdateProductDialog'
 
 export default function AppTable() {
-  const { allProducts, loadProducts } = useProductStore()
+  const { allProducts, loadProducts, selectedProduct } = useProductStore()
 
   useEffect(() => {
     loadProducts()
@@ -20,7 +21,7 @@ export default function AppTable() {
           <div className="">
             <CardTitle className="font-bold text-[23px]">Produtos</CardTitle>
           </div>
-          <ProductDialog />
+          {selectedProduct ? <UpdateProductDialog /> : <ProductDialog />}
         </div>
       </CardHeader>
 

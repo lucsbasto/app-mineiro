@@ -8,7 +8,7 @@ export function EditItem({ row }: { row: Row<Product> }) {
 
   function handleEditItem(item: Product) {
     setOpenProductDialog(true)
-    setSelectedProduct(row.original)
+    setSelectedProduct(item)
   }
 
   return (
