@@ -1,29 +1,28 @@
 import type { ColumnDef } from '@tanstack/react-table'
 import { ArrowUpDown } from 'lucide-react'
 import type { Product } from './ProductTable'
-import { ProductDropDown } from './ProductDropDown'
+import { DeleteItem } from './DeleteItem'
+import { EditItem } from './EditItem'
 
 export const columns: ColumnDef<Product>[] = [
   {
     accessorKey: 'type',
     header: ({ column }) => (
       <div
-        className="text-center px-2 cursor-pointer"
+        className=" px-2 cursor-pointer"
         onKeyDown={() => column.toggleSorting()}
       >
         Tipo
         <ArrowUpDown className="ml-2 h-4 w-4 inline-block" />
       </div>
     ),
-    cell: ({ row }) => (
-      <div className="text-center">{row.getValue('type')}</div>
-    ),
+    cell: ({ row }) => <div className="">{row.getValue('type')}</div>,
   },
   {
     accessorKey: 'price',
     header: ({ column }) => (
       <div
-        className="text-center px-2 cursor-pointer"
+        className=" px-2 cursor-pointer"
         onKeyDown={() => column.toggleSorting()}
       >
         Preço
@@ -36,59 +35,53 @@ export const columns: ColumnDef<Product>[] = [
         style: 'currency',
         currency: 'BRL',
       }).format(amount)
-      return <div className="text-center">{formatted}</div>
+      return <div className="">{formatted}</div>
     },
   },
   {
     accessorKey: 'quantity',
     header: ({ column }) => (
       <div
-        className="text-center px-2 cursor-pointer"
+        className=" px-2 cursor-pointer"
         onKeyDown={() => column.toggleSorting()}
       >
         Quantidade
         <ArrowUpDown className="ml-2 h-4 w-4 inline-block" />
       </div>
     ),
-    cell: ({ row }) => (
-      <div className="text-center">{row.getValue('quantity')}</div>
-    ),
+    cell: ({ row }) => <div className="">{row.getValue('quantity')}</div>,
   },
   {
     accessorKey: 'sold',
     header: ({ column }) => (
       <div
-        className="text-center px-2 cursor-pointer"
+        className=" px-2 cursor-pointer"
         onKeyDown={() => column.toggleSorting()}
       >
         Vendido
         <ArrowUpDown className="ml-2 h-4 w-4 inline-block" />
       </div>
     ),
-    cell: ({ row }) => (
-      <div className="text-center">{row.getValue('sold')}</div>
-    ),
+    cell: ({ row }) => <div className="">{row.getValue('sold')}</div>,
   },
   {
     accessorKey: 'returned',
     header: ({ column }) => (
       <div
-        className="text-center px-2 cursor-pointer"
+        className=" px-2 cursor-pointer"
         onKeyDown={() => column.toggleSorting()}
       >
         Devolvido
         <ArrowUpDown className="ml-2 h-4 w-4 inline-block" />
       </div>
     ),
-    cell: ({ row }) => (
-      <div className="text-center">{row.getValue('returned')}</div>
-    ),
+    cell: ({ row }) => <div className="">{row.getValue('returned')}</div>,
   },
   {
     accessorKey: 'unitCost',
     header: ({ column }) => (
       <div
-        className="text-center px-2 cursor-pointer"
+        className=" px-2 cursor-pointer"
         onKeyDown={() => column.toggleSorting()}
       >
         Custo Unitário
@@ -101,14 +94,14 @@ export const columns: ColumnDef<Product>[] = [
         style: 'currency',
         currency: 'BRL',
       }).format(amount)
-      return <div className="text-center">{formatted}</div>
+      return <div className="">{formatted}</div>
     },
   },
   {
     accessorKey: 'revenue',
     header: ({ column }) => (
       <div
-        className="text-center px-2 cursor-pointer"
+        className=" px-2 cursor-pointer"
         onKeyDown={() => column.toggleSorting()}
       >
         Receita
@@ -121,14 +114,14 @@ export const columns: ColumnDef<Product>[] = [
         style: 'currency',
         currency: 'BRL',
       }).format(amount)
-      return <div className="text-center">{formatted}</div>
+      return <div className="">{formatted}</div>
     },
   },
   {
     accessorKey: 'totalCost',
     header: ({ column }) => (
       <div
-        className="text-center px-2 cursor-pointer"
+        className=" px-2 cursor-pointer"
         onKeyDown={() => column.toggleSorting()}
       >
         Custo Total
@@ -141,14 +134,14 @@ export const columns: ColumnDef<Product>[] = [
         style: 'currency',
         currency: 'BRL',
       }).format(amount)
-      return <div className="text-center">{formatted}</div>
+      return <div className="">{formatted}</div>
     },
   },
   {
     accessorKey: 'profit',
     header: ({ column }) => (
       <div
-        className="text-center px-2 cursor-pointer"
+        className=" px-2 cursor-pointer"
         onKeyDown={() => column.toggleSorting()}
       >
         Lucro
@@ -164,7 +157,7 @@ export const columns: ColumnDef<Product>[] = [
 
       return (
         <div
-          className={`text-center font-semibold ${amount >= 0 ? 'text-green-500' : 'text-red-500'}`}
+          className={` font-semibold ${amount >= 0 ? 'text-green-500' : 'text-red-500'}`}
         >
           {formatted}
         </div>
@@ -174,9 +167,14 @@ export const columns: ColumnDef<Product>[] = [
   {
     id: 'actions',
     enableHiding: false,
-    header: () => <div className="text-center px-2">Ações</div>,
+    header: () => <div className="px-2">Ações</div>,
     cell: ({ row }) => {
-      return <ProductDropDown row={row} />
+      return (
+        <div className="flex">
+          <EditItem row={row} />
+          <DeleteItem row={row} />
+        </div>
+      )
     },
   },
 ]

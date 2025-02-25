@@ -14,6 +14,7 @@ export const data: Product[] = [
     revenue: 200.0,
     totalCost: 125.0,
     profit: 75.0,
+    createdAt: new Date(),
   },
   {
     id: '010e62cc-06b2-4095-8c06-0dc1629be4d1',
@@ -26,6 +27,7 @@ export const data: Product[] = [
     revenue: 150.0,
     totalCost: 90.0,
     profit: 60.0,
+    createdAt: new Date(),
   },
   {
     id: '010e62cc-06b2-4095-8c06-0dc1629be4d2',
@@ -38,6 +40,7 @@ export const data: Product[] = [
     revenue: 157.5,
     totalCost: 80.0,
     profit: 77.5,
+    createdAt: new Date(),
   },
   {
     id: '010e62cc-06b2-4095-8c06-0dc1629be4d3',
@@ -50,6 +53,7 @@ export const data: Product[] = [
     revenue: 126.0,
     totalCost: 70.0,
     profit: 56.0,
+    createdAt: new Date(),
   },
   {
     id: '010e62cc-06b2-4095-8c06-0dc1629be4d4',
@@ -62,6 +66,7 @@ export const data: Product[] = [
     revenue: 126.0,
     totalCost: 70.0,
     profit: -56.0,
+    createdAt: new Date(),
   },
   {
     id: '010e62cc-06b2-4095-8c06-0dc1629be4d5',
@@ -74,5 +79,6 @@ export const data: Product[] = [
     revenue: 759.5,
     totalCost: 435.0,
     profit: 268.5,
+    createdAt: new Date(),
   },
 ]

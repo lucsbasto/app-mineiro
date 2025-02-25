@@ -13,7 +13,7 @@ export default function UnitCost({ name }: UnitCostProps) {
   const {
     register,
     formState: { errors },
-    setValue, // Usaremos setValue para atualizar o valor no react-hook-form
+    setValue,
   } = useFormContext()
 
   return (

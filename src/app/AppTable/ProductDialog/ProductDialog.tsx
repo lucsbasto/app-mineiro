@@ -16,11 +16,14 @@ import QuantitySold from './components/QuantitySold'
 import UnitCost from './components/UnitCost'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FormProvider, useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 
 import { z } from 'zod'
 import type { Product } from '@/app/Products/ProductTable'
 import Price from './components/Price'
 import { convertToFloat } from '@/utils/convert-to-float.utils'
+import { useProductStore } from '@/store/ProductStore'
+import { useRef } from 'react'
 
 const ProductSchema = z.object({
   type: z.string().min(1, 'O tipo do produto é obrigatório'),
@@ -59,6 +62,10 @@ const ProductSchema = z.object({
 type ProductFormData = z.infer<typeof ProductSchema>
 
 export function ProductDialog() {
+  const { addProduct, isLoading } = useProductStore()
+
+  const dialogCloseRef = useRef<HTMLButtonElement | null>(null)
+
   const methods = useForm<ProductFormData>({
     resolver: zodResolver(ProductSchema),
     defaultValues: {
@@ -72,9 +79,7 @@ export function ProductDialog() {
   })
   const { reset } = methods
   const { errors } = methods.formState
-  console.log(errors) // Logando os erros para ver se há algum impedindo o envio
-  const onSubmit = (data: ProductFormData) => {
-    console.log({ data })
+  const onSubmit = async (data: ProductFormData) => {
     const revenue = 0
     const totalCost = 0
     const profit = 0
@@ -89,9 +94,14 @@ export function ProductDialog() {
       revenue: revenue,
       totalCost: totalCost,
       profit: profit,
+      createdAt: new Date(),
     }
-    console.log(product)
-    // handleReset()
+    const result = await addProduct(product)
+    if (result) {
+      toast('Produto adicionado com sucesso')
+      dialogCloseRef.current?.click()
+      handleReset()
+    }
   }
 
   function handleReset() {
@@ -125,7 +135,7 @@ export function ProductDialog() {
               </div>
             </div>
             <DialogFooter className="pt-10">
-              <DialogClose onClick={handleReset} asChild>
+              <DialogClose ref={dialogCloseRef} onClick={handleReset} asChild>
                 <Button className="h-11 px-11">Cancelar</Button>
               </DialogClose>
               <Button className="h-11 px-11" type="submit">

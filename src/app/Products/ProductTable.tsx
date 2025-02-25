@@ -33,6 +33,7 @@ export type Product = {
   revenue?: number
   totalCost: number
   profit: number
+  createdAt: Date
 }
 
 export function ProductTable({
