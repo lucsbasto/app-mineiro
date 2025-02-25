@@ -1,17 +1,24 @@
-import { Input } from "@/components/ui/input";
-import { Label } from "@radix-ui/react-dropdown-menu";
-import { NumericFormat } from "react-number-format";
+import { Input } from '@/components/ui/input'
+import { Label } from '@radix-ui/react-dropdown-menu'
+import { useFormContext } from 'react-hook-form'
+interface QuantitySoldProps {
+  name: string
+}
+export default function QuantitySold({ name }: QuantitySoldProps) {
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext()
 
-export default function QuantitySold(){
-    return (
-        <div className="flex flex-col gap-2 mt-5">
-            <Label>
-                {"Vendido"}
-            </Label>
-            <Input
-                type="number"
-                placeholder="Vendido"
-            />
-        </div>  
-    )
+  return (
+    <div className="flex flex-col gap-2 mt-5">
+      <Label>{'Vendido'}</Label>
+      <Input
+        id={name}
+        type="number"
+        placeholder="Vendido"
+        {...register(name, { valueAsNumber: true })}
+      />
+    </div>
+  )
 }
