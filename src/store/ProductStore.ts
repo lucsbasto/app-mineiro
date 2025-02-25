@@ -9,10 +9,13 @@ interface ProductState {
   isLoading: boolean
   addProduct: (product: Product) => Promise<{ success: boolean }>
   deleteProduct: (productId: string) => Promise<{ success: boolean }>
-  openDialog: boolean
-  setOpenDialog: (openDialog: boolean) => void
+  openDeleteDialog: boolean
+  setOpenDeleteDialog: (openDialog: boolean) => void
   selectedProduct: Product | null
   setSelectedProduct: (product: Product | null) => void
+  openProductDialog: boolean
+  setOpenProductDialog: (openProductDialog: boolean) => void
+  updateProduct: (product: Product) => Promise<{ success: boolean }>
 }
 
 export const useProductStore = create<ProductState>(set => {
@@ -41,8 +44,8 @@ export const useProductStore = create<ProductState>(set => {
     setSelectedProduct: (product: Product | null) => {
       set({ selectedProduct: product })
     },
-    setOpenDialog: (openDialog: boolean) => {
-      set({ openDialog: openDialog })
+    setOpenDeleteDialog: (openDeleteDialog: boolean) => {
+      set({ openDeleteDialog: openDeleteDialog })
     },
     deleteProduct: async (productId: string) => {
       set({ isLoading: true })
@@ -56,7 +59,28 @@ export const useProductStore = create<ProductState>(set => {
         return { success: true }
       } finally {
         set({ isLoading: false })
-        set({ openDialog: false })
+        set({ openDeleteDialog: false })
+        set({ selectedProduct: null })
+      }
+    },
+    openDeleteDialog: false,
+    openProductDialog: false,
+    setOpenProductDialog: (openProductDialog: boolean) => {
+      set({ openProductDialog: openProductDialog })
+    },
+    updateProduct: async (updatedProduct: Product) => {
+      set({ isLoading: true })
+      try {
+        await new Promise(resolve => setTimeout(resolve, 1789))
+        set(state => ({
+          allProducts: state.allProducts.map(product =>
+            product.id === updatedProduct.id ? updatedProduct : product
+          ),
+        }))
+        return { success: true }
+      } finally {
+        set({ isLoading: false })
+        set({ openProductDialog: false })
         set({ selectedProduct: null })
       }
     },

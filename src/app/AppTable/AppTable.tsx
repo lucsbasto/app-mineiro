@@ -19,9 +19,6 @@ export default function AppTable() {
         <div className="flex justify-between items-center">
           <div className="">
             <CardTitle className="font-bold text-[23px]">Produtos</CardTitle>
-            <p className="text-sm text-slate-600">
-              {allProducts.length} produtos
-            </p>
           </div>
           <ProductDialog />
         </div>

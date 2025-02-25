@@ -4,10 +4,10 @@ import type { Row } from '@tanstack/react-table'
 import { MdOutlineDelete } from 'react-icons/md'
 
 export function DeleteItem({ row }: { row: Row<Product> }) {
-  const { setOpenDialog, setSelectedProduct } = useProductStore()
+  const { setOpenDeleteDialog, setSelectedProduct } = useProductStore()
 
   function handleDeleteItem(item: Product) {
-    setOpenDialog(true)
+    setOpenDeleteDialog(true)
     setSelectedProduct(item)
   }
 

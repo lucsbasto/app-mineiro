@@ -23,7 +23,7 @@ import type { Product } from '@/app/Products/ProductTable'
 import Price from './components/Price'
 import { convertToFloat } from '@/utils/convert-to-float.utils'
 import { useProductStore } from '@/store/ProductStore'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 
 const ProductSchema = z.object({
   type: z.string().min(1, 'O tipo do produto é obrigatório'),
@@ -62,7 +62,13 @@ const ProductSchema = z.object({
 type ProductFormData = z.infer<typeof ProductSchema>
 
 export function ProductDialog() {
-  const { addProduct, isLoading } = useProductStore()
+  const {
+    addProduct,
+    selectedProduct,
+    openProductDialog,
+    setOpenProductDialog,
+    updateProduct,
+  } = useProductStore()
 
   const dialogCloseRef = useRef<HTMLButtonElement | null>(null)
 
@@ -78,29 +84,51 @@ export function ProductDialog() {
     },
   })
   const { reset } = methods
-  const { errors } = methods.formState
   const onSubmit = async (data: ProductFormData) => {
-    const revenue = 0
-    const totalCost = 0
-    const profit = 0
-    const product: Product = {
-      id: 'teste',
-      unitCost: data.unitCost,
-      type: data.type,
-      price: data.price,
-      quantity: data.quantity,
-      sold: data.sold,
-      returned: data.returned,
-      revenue: revenue,
-      totalCost: totalCost,
-      profit: profit,
-      createdAt: new Date(),
-    }
-    const result = await addProduct(product)
-    if (result) {
-      toast('Produto adicionado com sucesso')
-      dialogCloseRef.current?.click()
-      handleReset()
+    if (!selectedProduct) {
+      const revenue = 0
+      const totalCost = 0
+      const profit = 0
+      const product: Product = {
+        id: 'teste',
+        unitCost: data.unitCost,
+        type: data.type,
+        price: data.price,
+        quantity: data.quantity,
+        sold: data.sold,
+        returned: data.returned,
+        revenue: revenue,
+        totalCost: totalCost,
+        profit: profit,
+        createdAt: new Date(),
+      }
+      const result = await addProduct(product)
+      if (result) {
+        toast('Produto adicionado com sucesso')
+        dialogCloseRef.current?.click()
+        handleReset()
+      }
+    } else {
+      const revenue = 0
+      const totalCost = 0
+      const profit = 0
+      const productToUpdate: Product = {
+        id: selectedProduct.id,
+        type: selectedProduct.type,
+        quantity: selectedProduct.quantity,
+        unitCost: selectedProduct.unitCost,
+        price: selectedProduct.price,
+        sold: selectedProduct.sold,
+        returned: selectedProduct.returned,
+        revenue: revenue,
+        totalCost: totalCost,
+        createdAt: selectedProduct.createdAt,
+        profit: profit,
+      }
+      const result = await updateProduct(productToUpdate)
+      if (result.success) {
+        toast('Produto atualizado com sucesso')
+      }
     }
   }
 
@@ -108,14 +136,39 @@ export function ProductDialog() {
     reset()
   }
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    if (selectedProduct) {
+      reset({
+        type: selectedProduct.type,
+        quantity: selectedProduct.quantity,
+        unitCost: selectedProduct.unitCost,
+        price: selectedProduct.price,
+        sold: selectedProduct.sold,
+        returned: selectedProduct.returned,
+      })
+    } else {
+      reset({
+        type: '',
+        quantity: 0,
+        unitCost: 0,
+        price: 0,
+        sold: 0,
+        returned: 0,
+      })
+    }
+  }, [selectedProduct, openProductDialog])
+
   return (
-    <Dialog>
+    <Dialog open={openProductDialog} onOpenChange={setOpenProductDialog}>
       <DialogTrigger asChild>
         <Button>Adicionar Produto</Button>
       </DialogTrigger>
       <DialogContent className="p-7 px-8 poppins">
         <DialogHeader>
-          <DialogTitle className="text-[22px]">Adicionar Produto</DialogTitle>
+          <DialogTitle className="text-[22px]">
+            {selectedProduct ? 'Editar Produto' : 'Adicionar Produto'}
+          </DialogTitle>
           <DialogDescription>
             Preencha o formulário com os dados do produto
           </DialogDescription>

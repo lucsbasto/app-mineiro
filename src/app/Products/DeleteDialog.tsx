@@ -14,8 +14,8 @@ import { toast } from 'sonner'
 
 export function DeleteDialog() {
   const {
-    openDialog,
-    setOpenDialog,
+    openDeleteDialog,
+    setOpenDeleteDialog,
     setSelectedProduct,
     selectedProduct,
     isLoading,
@@ -34,9 +34,9 @@ export function DeleteDialog() {
 
   return (
     <AlertDialog
-      open={openDialog}
+      open={openDeleteDialog}
       onOpenChange={open => {
-        setOpenDialog(open)
+        setOpenDeleteDialog(open)
       }}
     >
       <AlertDialogTrigger>Open</AlertDialogTrigger>
