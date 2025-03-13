@@ -30,7 +30,7 @@ export const useProductStore = create<ProductState>(set => {
     selectedProduct: null,
     openDialog: false,
     openDeleteDialog: false,
-    openProductDialog: false,
+    openCreateProductDialog: false,
     openUpdateProductDialog: false,
     setAllProducts: (allProducts: Product[]) => {
       set({ allProducts: allProducts })

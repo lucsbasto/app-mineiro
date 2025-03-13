@@ -114,30 +114,18 @@ export function CreateProductDialog() {
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    if (selectedProduct) {
-      reset({
-        type: selectedProduct.type,
-        quantity: selectedProduct.quantity,
-        unitCost: selectedProduct.unitCost,
-        price: selectedProduct.price,
-        sold: selectedProduct.sold,
-        returned: selectedProduct.returned,
-      })
-    } else {
-      reset({
-        type: '',
-        quantity: 0,
-        unitCost: 0,
-        price: 0,
-        sold: 0,
-        returned: 0,
-      })
-    }
-  }, [selectedProduct, openCreateProductDialog])
+    reset({
+      type: '',
+      quantity: 0,
+      unitCost: 0,
+      price: 0,
+      sold: 0,
+      returned: 0,
+    })
+  }, [openCreateProductDialog])
 
   return (
     <Dialog
-      key={'bbb'}
       open={openCreateProductDialog}
       onOpenChange={setOpenCreateProductDialog}
     >

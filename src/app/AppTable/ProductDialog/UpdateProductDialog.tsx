@@ -115,7 +115,6 @@ export function UpdateSaleDialog() {
 
   return (
     <Dialog
-      key={'aaa'}
       open={openUpdateProductDialog}
       onOpenChange={closeUpdateProductDialog}
     >
