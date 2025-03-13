@@ -23,7 +23,7 @@ import {
 } from '@/components/ui/table'
 
 export type Product = {
-  id: string
+  id?: string
   type: string
   price: number
   quantity: number
@@ -33,7 +33,7 @@ export type Product = {
   revenue?: number
   totalCost: number
   profit: number
-  createdAt: Date
+  createdAt?: Date
 }
 
 export function ProductTable({

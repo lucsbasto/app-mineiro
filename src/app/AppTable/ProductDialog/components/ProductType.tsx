@@ -4,9 +4,10 @@ import { useFormContext } from 'react-hook-form'
 import { MdError } from 'react-icons/md'
 interface ProductTypeProps {
   name: string
+  readonly: boolean
 }
 
-export default function ProductType({ name }: ProductTypeProps) {
+export default function ProductType({ name, readonly }: ProductTypeProps) {
   const {
     register,
     formState: { errors },
@@ -21,6 +22,7 @@ export default function ProductType({ name }: ProductTypeProps) {
           type="text"
           className="h-11 shadow-none"
           placeholder="Costela"
+          readOnly={readonly}
         />
       </div>
       {errors.productName && (

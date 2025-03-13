@@ -1,29 +1,25 @@
-'use client'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from '@/components/ui/dialog'
 import ProductType from './components/ProductType'
-import Quantity from './components/Quantity'
 import QuantityReturned from './components/QuantityReturned'
 import QuantitySold from './components/QuantitySold'
-import UnitCost from './components/UnitCost'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FormProvider, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
 import { z } from 'zod'
 import type { Product } from '@/app/Products/ProductTable'
-import Price from './components/Price'
 import { convertToFloat } from '@/utils/convert-to-float.utils'
 import { useProductStore } from '@/store/ProductStore'
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 
 const UpdateProductSchema = z.object({
   type: z.string().min(1, 'O tipo do produto é obrigatório'),
@@ -59,16 +55,15 @@ const UpdateProductSchema = z.object({
 })
 
 type ProductFormData = z.infer<typeof UpdateProductSchema>
-
-export function UpdateProductDialog() {
+export function UpdateSaleDialog() {
   const {
     selectedProduct,
-    openProductDialog,
-    setOpenProductDialog,
+    openUpdateProductDialog,
+    setOpenUpdateProductDialog,
     updateProduct,
+    nextProduct,
+    onCloseProductDialog,
   } = useProductStore()
-
-  const dialogCloseRef = useRef<HTMLButtonElement | null>(null)
 
   const methods = useForm<ProductFormData>({
     resolver: zodResolver(UpdateProductSchema),
@@ -82,18 +77,29 @@ export function UpdateProductDialog() {
       ...selectedProduct,
       ...data,
     }
-
     const result = await updateProduct(productToUpdate)
+
     if (result.success) {
       toast('Produto atualizado com sucesso')
-      dialogCloseRef.current?.click()
+      await nextProduct()
+      // Não é necessário chamar resetForm aqui, pois o useEffect cuida disso
+    }
+  }
+  const closeUpdateProductDialog = (open: boolean) => {
+    setOpenUpdateProductDialog(open)
+    if (!open) {
+      reset({
+        type: selectedProduct?.type,
+        sold: selectedProduct?.sold,
+        returned: selectedProduct?.returned,
+      })
+      onCloseProductDialog()
     }
   }
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (selectedProduct) {
-      console.log('asadas', selectedProduct.unitCost)
       reset({
         type: selectedProduct.type,
         quantity: selectedProduct.quantity,
@@ -102,12 +108,21 @@ export function UpdateProductDialog() {
         sold: selectedProduct.sold,
         returned: selectedProduct.returned,
       })
+    } else {
+      reset() // Resetar o formulário quando não há produto selecionado
     }
-  }, [selectedProduct, openProductDialog])
+  }, [selectedProduct, reset])
 
   return (
-    <Dialog open={openProductDialog} onOpenChange={setOpenProductDialog}>
-      <DialogContent className="p-7 px-8 poppins">
+    <Dialog
+      key={'aaa'}
+      open={openUpdateProductDialog}
+      onOpenChange={closeUpdateProductDialog}
+    >
+      <DialogTrigger asChild>
+        <Button>Editar Venda</Button>
+      </DialogTrigger>
+      <DialogContent className="p-7 px-8 poppins max-w-3xl w-full h-auto">
         <DialogHeader>
           <DialogTitle className="text-[22px]">Editar Produto</DialogTitle>
           <DialogDescription>
@@ -118,22 +133,14 @@ export function UpdateProductDialog() {
           <form onSubmit={methods.handleSubmit(onSubmit)}>
             <div className="flex flex-col gap-2 mt-1">
               <div className="grid grid-cols-3 gap-7">
-                <ProductType name="type" />
-                <Quantity name="quantity" />
-                <UnitCost name="unitCost" />
-              </div>
-              <div className="grid grid-cols-3 gap-5 items-center">
-                <Price name="price" />
+                <ProductType name="type" readonly={true} />
                 <QuantitySold name="sold" />
                 <QuantityReturned name="returned" />
               </div>
             </div>
             <DialogFooter className="pt-10">
-              <DialogClose ref={dialogCloseRef} asChild>
-                <Button className="h-11 px-11">Cancelar</Button>
-              </DialogClose>
               <Button className="h-11 px-11" type="submit">
-                Salvar Alterações
+                Confirmar e Próximo
               </Button>
             </DialogFooter>
           </form>

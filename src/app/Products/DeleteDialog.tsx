@@ -7,10 +7,8 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { useProductStore } from '@/store/ProductStore'
-import { toast } from 'sonner'
 
 export function DeleteDialog() {
   const {
@@ -23,13 +21,7 @@ export function DeleteDialog() {
   } = useProductStore()
 
   async function deleteProductFn() {
-    console.log('aqui')
-    if (selectedProduct) {
-      const result = await deleteProduct(selectedProduct?.id)
-      if (result) {
-        toast('Produto deletado com sucesso')
-      }
-    }
+    console.log('deletando produto', selectedProduct)
   }
 
   return (
@@ -39,23 +31,22 @@ export function DeleteDialog() {
         setOpenDeleteDialog(open)
       }}
     >
-      <AlertDialogTrigger>Open</AlertDialogTrigger>
       <AlertDialogContent className="p-8">
         <AlertDialogHeader>
           <AlertDialogTitle className="text-xl">
-            Are you absolutely sure?
+            Você tem certeza absoluta?
           </AlertDialogTitle>
           <AlertDialogDescription className="mt-2">
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
+            Esta ação não pode ser desfeita. Isso excluirá permanentemente o
+            produto.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="mt-8">
           <AlertDialogCancel onClick={() => setSelectedProduct(null)}>
-            {isLoading ? 'Deletando ...' : 'Produto'}
+            {isLoading ? 'Deletando...' : 'Cancelar'}
           </AlertDialogCancel>
           <AlertDialogAction onClick={deleteProductFn}>
-            Continue
+            Confirmar
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

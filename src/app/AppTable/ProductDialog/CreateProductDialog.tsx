@@ -61,13 +61,12 @@ const ProductSchema = z.object({
 
 type ProductFormData = z.infer<typeof ProductSchema>
 
-export function ProductDialog() {
+export function CreateProductDialog() {
   const {
     addProduct,
     selectedProduct,
-    openProductDialog,
-    setOpenProductDialog,
-    updateProduct,
+    openCreateProductDialog,
+    setOpenCreateProductDialog,
   } = useProductStore()
 
   const dialogCloseRef = useRef<HTMLButtonElement | null>(null)
@@ -90,7 +89,6 @@ export function ProductDialog() {
       const totalCost = 0
       const profit = 0
       const product: Product = {
-        id: 'teste',
         unitCost: data.unitCost,
         type: data.type,
         price: data.price,
@@ -100,34 +98,12 @@ export function ProductDialog() {
         revenue: revenue,
         totalCost: totalCost,
         profit: profit,
-        createdAt: new Date(),
       }
       const result = await addProduct(product)
       if (result) {
         toast('Produto adicionado com sucesso')
         dialogCloseRef.current?.click()
         handleReset()
-      }
-    } else {
-      const revenue = 0
-      const totalCost = 0
-      const profit = 0
-      const productToUpdate: Product = {
-        id: selectedProduct.id,
-        type: selectedProduct.type,
-        quantity: selectedProduct.quantity,
-        unitCost: selectedProduct.unitCost,
-        price: selectedProduct.price,
-        sold: selectedProduct.sold,
-        returned: selectedProduct.returned,
-        revenue: revenue,
-        totalCost: totalCost,
-        createdAt: selectedProduct.createdAt,
-        profit: profit,
-      }
-      const result = await updateProduct(productToUpdate)
-      if (result.success) {
-        toast('Produto atualizado com sucesso')
       }
     }
   }
@@ -157,18 +133,20 @@ export function ProductDialog() {
         returned: 0,
       })
     }
-  }, [selectedProduct, openProductDialog])
+  }, [selectedProduct, openCreateProductDialog])
 
   return (
-    <Dialog open={openProductDialog} onOpenChange={setOpenProductDialog}>
+    <Dialog
+      key={'bbb'}
+      open={openCreateProductDialog}
+      onOpenChange={setOpenCreateProductDialog}
+    >
       <DialogTrigger asChild>
         <Button>Adicionar Produto</Button>
       </DialogTrigger>
-      <DialogContent className="p-7 px-8 poppins">
+      <DialogContent className="p-7 px-8 poppins max-w-3xl w-full h-auto">
         <DialogHeader>
-          <DialogTitle className="text-[22px]">
-            {selectedProduct ? 'Editar Produto' : 'Adicionar Produto'}
-          </DialogTitle>
+          <DialogTitle className="text-[22px]">Adicionar Produto</DialogTitle>
           <DialogDescription>
             Preencha o formulário com os dados do produto
           </DialogDescription>
@@ -177,7 +155,7 @@ export function ProductDialog() {
           <form onSubmit={methods.handleSubmit(onSubmit)}>
             <div className="flex flex-col gap-2 mt-1">
               <div className="grid grid-cols-3 gap-7">
-                <ProductType name="type" />
+                <ProductType name="type" readonly={false} />
                 <Quantity name="quantity" />
                 <UnitCost name="unitCost" />
               </div>
