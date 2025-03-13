@@ -4,10 +4,10 @@ import type { Row } from '@tanstack/react-table'
 import { FaRegEdit } from 'react-icons/fa'
 
 export function EditItem({ row }: { row: Row<Product> }) {
-  const { setOpenProductDialog, setSelectedProduct } = useProductStore()
+  const { setOpenUpdateProductDialog, setSelectedProduct } = useProductStore()
 
   function handleEditItem(item: Product) {
-    setOpenProductDialog(true)
+    setOpenUpdateProductDialog(true)
     setSelectedProduct(item)
   }
 
