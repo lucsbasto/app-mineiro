@@ -128,5 +128,5 @@ async function fetchProducts(): Promise<Product[]> {
   const date = new Date()
   const formattedDate = date.toISOString().split('T')[0]
   const sales = await getSalesByDate(formattedDate)
-  return sales
+  return sales.data || []
 }

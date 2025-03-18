@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+}
+
 body {
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -9,7 +16,6 @@ body {
 .poppins {
   font-family: var(--font-poppins);
 }
-
 
 @layer base {
   :root {
@@ -68,7 +74,6 @@ body {
   }
 }
 
-
 @layer base {
   * {
     @apply border-border;
@@ -78,10 +83,6 @@ body {
     @apply bg-background text-foreground;
   }
 }
-
-
-
-
 
 @layer base {
   * {
