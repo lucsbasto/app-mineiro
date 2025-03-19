@@ -1,8 +1,8 @@
 import type { ColumnDef } from '@tanstack/react-table'
 import { ArrowUpDown } from 'lucide-react'
-import type { Product } from './ProductTable'
 import { DeleteItem } from './DeleteItem'
 import { EditItem } from './EditItem'
+import type { Product } from '@/lib/types'
 
 export const columns: ColumnDef<Product>[] = [
   {
