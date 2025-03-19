@@ -16,10 +16,10 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
 import { z } from 'zod'
-import type { Product } from '@/app/Products/ProductTable'
 import { convertToFloat } from '@/utils/convert-to-float.utils'
 import { useProductStore } from '@/store/ProductStore'
 import { useEffect } from 'react'
+import type { Product } from '@/lib/types'
 
 const UpdateProductSchema = z.object({
   type: z.string().min(1, 'O tipo do produto é obrigatório'),
