@@ -1,5 +1,5 @@
+import type { Product } from '@/lib/types'
 import { useProductStore } from '@/store/ProductStore'
-import type { Product } from './ProductTable'
 import type { Row } from '@tanstack/react-table'
 import { FaRegEdit } from 'react-icons/fa'
 
