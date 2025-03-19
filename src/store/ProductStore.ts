@@ -1,5 +1,5 @@
-import type { Product } from '@/app/Products/ProductTable'
-import { getSalesByDate } from '@/lib/salesApi'
+import { getSalesProductsByDate } from '@/lib/SalesProducts/sales-product'
+import type { Product } from '@/lib/types'
 import { create } from 'zustand'
 
 interface ProductState {
@@ -37,6 +37,7 @@ export const useProductStore = create<ProductState>(set => {
     },
     loadProducts: async () => {
       const fetchedProducts = await fetchProducts()
+      console.log({ fetchedProducts })
       set({ allProducts: fetchedProducts })
       set({ selectedProduct: fetchedProducts?.at(0) })
     },
@@ -125,8 +126,26 @@ export const useProductStore = create<ProductState>(set => {
 })
 
 async function fetchProducts(): Promise<Product[]> {
-  const date = new Date()
-  const formattedDate = date.toISOString().split('T')[0]
-  const sales = await getSalesByDate(formattedDate)
-  return sales.data || []
+  const date = '2025-03-13T12:07:02.234504+00:00'
+  const formattedDate = date.split('T')[0]
+
+  const response = await getSalesProductsByDate(formattedDate)
+  return response.map(item => formatProducts(item))
+}
+
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+function formatProducts(product: any): Product {
+  return {
+    id: product.id, // Se o id estiver presente, ele será atribuído
+    type: product.products?.type, // Acessa o tipo de produto da estrutura interna `products`
+    price: product.price,
+    quantity: product.quantity,
+    sold: product.sold || 0, // Define 0 como padrão caso `sold` seja indefinido
+    returned: product.returned || 0, // Define 0 como padrão caso `returned` seja indefinido
+    unitCost: product.unit_cost, // Usa o campo `unit_cost` da resposta
+    revenue: product.revenue || 0, // Define 0 como padrão caso `revenue` seja indefinido
+    totalCost: product.total_cost, // Usa o campo `total_cost` da resposta
+    profit: product.profit, // Usa o campo `profit` da resposta
+    createdAt: product.created_at ? new Date(product.created_at) : undefined, // Converte para Date se o campo existir
+  }
 }

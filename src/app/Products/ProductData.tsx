@@ -1,6 +1,6 @@
 'use client'
 
-import type { Product } from './ProductTable'
+import type { Product } from '@/lib/types'
 
 export const data: Product[] = [
   {

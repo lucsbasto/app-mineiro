@@ -21,20 +21,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-
-export type Product = {
-  id?: string
-  type: string
-  price: number
-  quantity: number
-  sold?: number
-  returned?: number
-  unitCost: number
-  revenue?: number
-  totalCost: number
-  profit: number
-  createdAt?: Date
-}
+import type { Product } from '@/lib/types'
 
 export function ProductTable({
   data,
