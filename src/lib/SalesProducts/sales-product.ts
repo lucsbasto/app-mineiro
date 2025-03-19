@@ -9,13 +9,13 @@ export async function getAll(req: NextApiRequest, res: NextApiResponse) {
   try {
     const { data: salesProducts, error } = await supabase
       .from('sales_products')
-      .select('*') // Fazendo a consulta no banco de dados
+      .select('*')
 
     if (error) {
-      throw error // Se houver erro na consulta, lançamos a exceção
+      throw error
     }
 
-    res.status(200).json(salesProducts) // Retorna os produtos de vendas
+    res.status(200).json(salesProducts)
   } catch (error) {
     res.status(500).json({ error: (error as Error).message })
   }
@@ -24,7 +24,7 @@ export async function getAll(req: NextApiRequest, res: NextApiResponse) {
 export async function getSalesProductsByDate(date: string) {
   try {
     const { data: salesProducts, error } = await supabase
-      .from('sales_products') // Tabela sales_products
+      .from('sales_products')
       .select(`
           id,
           price,
@@ -36,15 +36,15 @@ export async function getSalesProductsByDate(date: string) {
           total_cost,
           profit,
           products(type)
-        `) // Seleciona todas as colunas de sales_products, sales e products
-      .filter('created_at', 'gte', `${date} 00:00:00`) // Começo do dia
-      .filter('created_at', 'lte', `${date} 23:59:59`) // Fim do dia
+        `)
+      .filter('created_at', 'gte', `${date} 00:00:00`)
+      .filter('created_at', 'lte', `${date} 23:59:59`)
 
     if (error) {
-      throw error // Se houver erro, lança a exceção
+      throw error
     }
 
-    return salesProducts // Retorna os produtos de vendas com todas as informações
+    return salesProducts
   } catch (error) {
     console.log({ error })
     throw new Error(
