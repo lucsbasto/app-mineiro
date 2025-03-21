@@ -1,7 +1,9 @@
 'use client'
 import { useTheme } from 'next-themes'
 import { useEffect, useState } from 'react'
-import { SalePage } from './SalePage/SalePage'
+import Dashboard from './dashboard/page'
+import Register from './register/page'
+import Login from './login/page'
 
 export default function Home() {
   const { theme } = useTheme()
@@ -12,9 +14,14 @@ export default function Home() {
     setIsClient(true)
   }, [])
 
+  const path = typeof window !== 'undefined' ? window.location.pathname : '/'
+
   return (
     <div className={`poppins ${bgColor} border w-full min-h-screen`}>
-      <SalePage />
+      {/* Renderiza o componente baseado na URL */}
+      {path === '/dashboard' && <Dashboard />}
+      {path === '/login' && <Login />}
+      {path === '/register' && <Register />}
     </div>
   )
 }

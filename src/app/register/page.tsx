@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 
-export function SignUp() {
+export default function Register() {
   return (
     <main className="poppins flex justify-center items-center h-screen w-full">
       <div className="flex bg-background items-center justify-center h-full max-w-3xl w-full p-4">
