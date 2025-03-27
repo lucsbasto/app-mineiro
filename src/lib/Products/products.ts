@@ -1,10 +1,10 @@
 import supabase from '../database'
 
-export async function getProductsId() {
+export async function getAllProducts() {
   try {
     const { data: products, error } = await supabase
       .from('products')
-      .select(`id`)
+      .select('*')
 
     if (error) {
       throw error
@@ -13,6 +13,6 @@ export async function getProductsId() {
     return products
   } catch (error) {
     console.log({ error })
-    throw new Error('Erro ao obter os produtos com dados relacionados.')
+    throw new Error('Erro ao obter todos os produtos.')
   }
 }

@@ -24,11 +24,10 @@ export default function Login() {
     e.preventDefault()
 
     try {
-      // Simulando uma requisição de login (substitua pela sua API)
       const { accessToken } = await authenticateUser(email, password)
-      localStorage.setItem('accessToken', accessToken) // Armazena o token no localStorage
+      localStorage.setItem('accessToken', accessToken)
 
-      router.push('/dashboard') // Redireciona após login bem-sucedido
+      router.push('/dashboard')
     } catch (error) {
       console.error('Erro ao fazer login:', error)
       alert('Erro ao fazer login. Verifique suas credenciais.')

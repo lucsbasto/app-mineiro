@@ -27,10 +27,8 @@ export default function Dashboard() {
     )
     // biome-ignore lint/style/noUselessElse: <explanation>
   } else {
-    // Redireciona para a página de login se o usuário não estiver logado
-    // Você pode usar o useRouter do Next.js para isso
     const router = useRouter()
     router.push('/login')
-    return null // ou um componente de carregamento
+    return null
   }
 }

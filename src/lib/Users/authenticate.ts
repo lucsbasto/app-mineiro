@@ -1,10 +1,16 @@
 'use server'
 import supabase from '../database'
 import bcrypt from 'bcryptjs'
-import jwt from 'jsonwebtoken'
+import jwt, { type JwtPayload } from 'jsonwebtoken'
 
 const JWT_SECRET =
   process.env.JWT_SECRET || 'e5578c5e-ac81-4145-a371-c256a23ba4fb' // Defina sua chave secreta segura
+
+interface CustomJwtPayload extends JwtPayload {
+  id: string
+  email: string
+  isAdmin: boolean
+}
 
 export async function authenticateUser(email: string, password: string) {
   try {
@@ -25,8 +31,8 @@ export async function authenticateUser(email: string, password: string) {
     if (!isPasswordValid) {
       throw new Error('Usuário ou senha inválidos.')
     }
-    const payload = {
-      userId: user.id,
+    const payload: CustomJwtPayload = {
+      id: user.id,
       email: user.username,
       isAdmin: user.is_admin,
     }
@@ -35,5 +41,24 @@ export async function authenticateUser(email: string, password: string) {
   } catch (error) {
     console.error({ error })
     throw new Error('Erro ao autenticar usuário.')
+  }
+}
+
+export async function getUserFromToken(token: string) {
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET) as CustomJwtPayload
+
+    if (!decoded) {
+      throw new Error('Token inválido ou expirado.')
+    }
+    const { id, email, isAdmin } = decoded
+    return {
+      id,
+      email,
+      isAdmin,
+    }
+  } catch (error) {
+    console.error({ error })
+    throw new Error('Erro ao obter usuário do token.')
   }
 }

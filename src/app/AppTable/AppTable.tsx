@@ -3,17 +3,21 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { ProductTable } from '../Products/ProductTable'
 import { columns } from '../Products/Columns'
 import { useProductStore } from '@/store/ProductStore'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { UpdateSaleDialog } from './ProductDialog/UpdateProductDialog'
 import { CreateProductDialog } from './ProductDialog/CreateProductDialog'
 
 export default function AppTable() {
-  const { allProducts, loadProducts, selectedProduct } = useProductStore()
+  const { allProducts, loadProducts } = useProductStore()
+  const [loaded, setLoaded] = useState(false)
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    loadProducts()
-  }, [])
+    console.log({ loaded })
+    if (!loaded) {
+      loadProducts().then(() => setLoaded(true))
+    }
+  }, [loadProducts, loaded])
 
   return (
     <Card className="mt-12 flex flex-col shadow-none poppins border-none">
